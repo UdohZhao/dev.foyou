@@ -2,8 +2,8 @@
 App({
   data: {
     // 域名
-    //domain: "https://weapp.icunji.com",
-    domain: "http://dev.foyou.local",
+    domain: "https://weapp.icunji.com",
+    //domain: "http://dev.foyou.local",
     phone: "18423031898",
     technicalSupport: ""
   },
