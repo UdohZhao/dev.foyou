@@ -7,12 +7,17 @@ Page({
    * 页面的初始数据
    */
   data: {
+    coupon: true,
     domain: App.data.domain,
     technicalSupport: App.data.technicalSupport,
     activeIndex: 0,
     sliderOffset: 0,
-    sliderLeft: 0
-
+    sliderLeft: 0,
+    imgUrls: ['http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',    'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',   'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg'],
+    indicatorDots: true,
+    autoplay: true,
+    interval: 5000,
+    duration: 1000
   },
 
   /**
@@ -26,7 +31,7 @@ Page({
     wx.showLoading({
       title: '加载中',
     })
-
+  
     // 请求首页数据（普通商品分类，普通商品）
     wx.request({
       url: App.data.domain +'/main/getData',
@@ -80,6 +85,47 @@ Page({
     setTimeout(function () {
       wx.hideLoading()
     }, 2000)
+
+    // 首次关注？
+    wx.request({
+      url: App.data.domain + '/wechatUser/add',
+      data: {
+        openid: wx.getStorageSync('openid')
+      },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      method: 'POST',
+      success: function (res) {
+
+        console.log(res.data);
+
+        if (res.data.code == 0) {
+          // 赋值
+          that.setData({
+            coupon: false,
+            couponType: 1,
+            dcData: res.data.data
+          })
+        }
+
+      },
+      fail: function (e) {
+        console.log(e)
+        wx.showModal({
+          title: '网络错误',
+          content: '请点击确定刷新页面!',
+          showCancel: false,
+          success: function (res) {
+            if (res.confirm) {
+              wx.reLaunch({
+                url: '/pages/main/main'
+              })
+            }
+          }
+        })
+      }
+    })  
 
   },
 
@@ -204,6 +250,70 @@ Page({
       url: '/pages/goodsDetail/goodsDetail?gid=' + gid
     })
     
+  },
+  changeIndicatorDots: function (e) {
+    this.setData({
+      indicatorDots: !this.data.indicatorDots
+    })
+  },
+
+  /**
+   * 立即领取优惠券
+   */
+  hideGetCoupon: function (e) {
+
+    var that = this;
+
+    console.log(e.currentTarget.dataset.price);
+    console.log(wx.getStorageSync('openid'));
+
+    // 请求累加优惠额度
+    wx.request({
+      url: App.data.domain + '/discountsAdd/add',
+      data: {
+        openid: wx.getStorageSync('openid'),
+        price: e.currentTarget.dataset.price
+      },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      method: 'POST',
+      success: function (res) {
+
+        console.log(res);
+
+        // if 
+        if (res.data.code == 1) {
+          wx.showModal({
+            title: '提示',
+            content: res.msg,
+            showCancel: false
+          })
+        }
+
+        that.setData({
+          coupon: true
+        });
+
+      },
+      fail: function (e) {
+        console.log(e)
+        wx.showModal({
+          title: '网络错误',
+          content: '请点击确定刷新页面!',
+          showCancel: false,
+          success: function (res) {
+            if (res.confirm) {
+              wx.reLaunch({
+                url: '/pages/main/main'
+              })
+            }
+          }
+        })
+      }
+    })
+
+
   }
 
 })

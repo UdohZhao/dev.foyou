@@ -20,6 +20,10 @@ $(function(){
           required: true,
           number: true
         },
+        percentage: {
+          required: true,
+          digits: true
+        },
         inventory: {
           required: true,
           digits: true
@@ -39,6 +43,10 @@ $(function(){
         promotion_price: {
           required: "<span style='color:red;'>促销价不能为空 :(</span>",
           number: "<span style='color:red;'>必须输入合法的数字（整数，小数） :(</span>"
+        },
+        percentage: {
+          required: "<span style='color:red;'>优惠百分比不能为空 :(</span>",
+          digits: "<span style='color:red;'>必须输入整数 :(</span>"
         },
         inventory: {
           required: "<span style='color:red;'>库存不能为空 :(</span>",

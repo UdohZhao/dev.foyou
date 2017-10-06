@@ -19,7 +19,7 @@
   width: 200rpx;
   border-radius: 200rpx;
   border: 10rpx solid rgba(0,0,0,0.5);
-  margin-top: 60rpx;
+  margin-top: 40rpx;
 }
 .nick-name{
   text-align: center;
@@ -39,4 +39,12 @@
 }
 .weui-footer{
     margin-top: 220rpx;
+}
+.coupon{
+  text-align: center;
+  color: #ffffff;
+  display: block;
+}
+.coupon-text{
+  color: #ff9300;
 }

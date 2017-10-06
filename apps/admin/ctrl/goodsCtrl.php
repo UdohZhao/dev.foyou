@@ -101,6 +101,8 @@ class goodsCtrl extends baseCtrl{
     $data['original_price'] = $_POST['original_price'];
     $data['promotion_price'] = $_POST['promotion_price'];
     $data['inventory'] = $_POST['inventory'];
+    $data['percentage'] = $_POST['percentage'];
+    $data['percentage_price'] = bcmul($data['promotion_price'], bcdiv($data['percentage'], 100, 2), 2);
     $data['content'] = $_POST['content'];
     $data['ctime'] = time();
     $data['type'] = $this->type;

@@ -1,5 +1,17 @@
 <view class="page">
     <view class="page__bd">
+
+    <!-- 首页banner start -->
+    <swiper indicator-dots="{{indicatorDots}}"
+      autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" style="height:500rpx;">
+      <block wx:for="{{gData}}" wx:key="i" wx:for-index="k" wx:for-item="v">
+        <swiper-item>
+          <image src="{{domain}}{{v.img_path}}" class="slide-image"/>
+        </swiper-item>
+      </block>
+    </swiper>
+    <!-- 首页banner end -->
+
       <view class="weui-tab">
           <view class="weui-navbar">
               <block wx:for="{{gcData}}" wx:key="i" wx:for-index="k" wx:for-item="v" >
@@ -11,13 +23,13 @@
           </view>
           <view class="weui-tab__panel">
 
-          <view wx:if="{{gData}}">
+          <!-- <view wx:if="{{gData}}">
             <view class="weui-flex">
               <view class="weui-flex__item">
                 <image src="{{domain}}{{banner}}" class="banner"></image>
               </view>
             </view>
-          </view>
+          </view> -->
 
             <!-- 遍历体 start -->
             <block wx:for="{{gcData}}" wx:key="i" wx:for-index="k" wx:for-item="v">
@@ -70,4 +82,9 @@
           </view>
       </view>
     </view>
+</view>
+
+<!-- 优惠券 -->
+<view hidden="{{coupon}}">
+<include src="/dist/commons/get-coupon/get-coupon.wxml"/> 
 </view>

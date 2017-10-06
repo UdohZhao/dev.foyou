@@ -10,7 +10,7 @@
                       <icon wx:else type="circle" class="cart-pro-select" data-index="{{index}}" bindtap="selectList"/>
                       <navigator url="/pages/goodsDetail/goodsDetail?gid={{item.gid}}"><image class="cart-thumb" src="{{domain}}{{item.gData.img_path}}"></image></navigator>
                       <text class="cart-pro-name">「{{item.specification}}」{{item.gData.cname}}</text>
-                      <text class="cart-pro-price">￥{{item.gData.promotion_price}}</text>
+                      <text class="cart-pro-price">￥{{item.gData.promotion_price}} - {{item.gData.percentage_price}}</text>
                       <view class="cart-count-box">
                           <text class="cart-count-down" bindtap="minusCount" data-index="{{index}}">-</text>
                           <text class="cart-count-num">{{item.quantity}}</text>

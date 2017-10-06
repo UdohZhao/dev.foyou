@@ -48,7 +48,7 @@
               <td>{{ v.cname }}</td>
               <td>{{ v.tips }}</td>
               <td>{{ v.original_price }}</td>
-              <td>{{ v.promotion_price }}</td>
+              <td>{{ v.promotion_price }}{% if v.type == 0 %}（折扣百分比：{{v.percentage}}%，折扣额度：¥{{v.percentage_price}}）{% endif %}</td>
               <td>{{ v.inventory }}</td>
               <td>
                 {% if v.status == 1 %}

@@ -35,4 +35,19 @@ class discountCoupon extends model{
     return $res->rowCount();
   }
 
+  /**
+   * 读取单条记录
+   */
+  public function getRow(){
+    return $this->get($this->table,'*');
+  }
+
+  /**
+   * 更新数据
+   */
+  public function save($id,$data){
+    $res = $this->update($this->table,$data,['id'=>$id]);
+    return $res->rowCount();
+  }
+
 }

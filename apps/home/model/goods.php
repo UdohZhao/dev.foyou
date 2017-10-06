@@ -54,5 +54,12 @@ class goods extends model{
     return $this->get($this->table,'*',['id'=>$id]);
   }
 
+  /**
+   * 读取优惠额度
+   */
+  public function getPercentagePrice($id){
+    return $this->get($this->table,'percentage_price',['id'=>$id]);
+  }
+
 
 }

@@ -15,6 +15,10 @@ class discountCouponCtrl extends baseCtrl{
   public function add(){
     // Get
     if (IS_GET === true) {
+      // 读取单条记录
+      $data = $this->db->getRow();
+      // assign
+      $this->assign('data',$data);
       // display
       $this->display('discountCoupon','add.html');
       die;
@@ -23,8 +27,14 @@ class discountCouponCtrl extends baseCtrl{
     if (IS_AJAX === true) {
       // data
       $data = $this->getData();
-      // 写入数据表
-      $res = $this->db->add($data);
+      // id
+      if ($this->id) {
+        // 更新数据表
+        $res = $this->db->save($this->id,$data);
+      } else {
+        // 写入数据表
+        $res = $this->db->add($data);
+      }
       if ($res) {
         echo J(R(200,'受影响的操作 :)'));
         die;
@@ -37,11 +47,10 @@ class discountCouponCtrl extends baseCtrl{
 
   // 初始化数据
   private function getData(){
-    $data = array();
     $data['show_language'] = htmlspecialchars($_POST['show_language']);
     $data['iprice'] = $_POST['iprice'];
     $data['price'] = $_POST['price'];
-    $data['sort'] = intval($_POST['sort']);
+    $data['sort'] = 0;
     return $data;
   }
 

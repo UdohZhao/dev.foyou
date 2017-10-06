@@ -31,24 +31,20 @@ page{
     height: 185rpx;
 }
 .cart-list .cart-pro-name{
-    display: inline-block;
-    width: 300rpx;
-    height: 105rpx;
+    display: block;
     line-height: 50rpx;
     overflow: hidden;
     font-size: 28rpx;
 }
 .cart-list .cart-pro-price{
-    display: inline-block;
-    float: right;
-    height: 105rpx;
+    display: block;
     line-height: 50rpx;
     color: #ff0000;
 }
 .cart-list .cart-count-box{
     position: absolute;
     left: 285;
-    bottom: 20rpx;
+    bottom: 1rpx;
     width: 250rpx;
     height: 80rpx;
 }
@@ -68,7 +64,7 @@ page{
 .cart-del{
     position: absolute;
     right: 20rpx;
-    bottom: 20rpx;
+    bottom: 1rpx;
     width: 80rpx;
     height: 80rpx;
     line-height: 80rpx;

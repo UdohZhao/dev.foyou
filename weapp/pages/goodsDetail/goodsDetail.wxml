@@ -26,10 +26,19 @@
       原价：¥{{gData.original_price}}
       </view>
     </view>
+    <view class="percentage-view">
+      * 此商品可用优惠券折扣：<text class="percentage-price">¥{{gData.percentage_price}}</text>
+    </view>
     <view class="commodity-content">
       <text class="content-freight">运费：免运费</text>
       <text class="content-inventory">库存：{{gData.inventory}}</text>
       <text class="content-salesvolume">销量：{{gData.igData.count}}</text>
+      <button open-type="share"
+                class="share-btn"
+                plain="true">
+            <image style="width: 40rpx;height: 40rpx" src="/dist/images/coupon/icon-share.png"/>
+            <view>分享</view>
+      </button>
     </view>
   </view>
 </view>
@@ -37,7 +46,7 @@
 
 
 <!-- 优惠券 start -->
-<view class="weui-flex">
+<!-- <view class="weui-flex">
   <view class="weui-flex__item">
     <view class="discount-coupon-box">
     <view wx:for="{{dcData}}" wx:key="i" wx:for-index="k" wx:for-item="v">
@@ -48,7 +57,7 @@
     </view>
     </view>
   </view>
-</view>
+</view> -->
 <!-- 优惠券 end -->
 
 <!--weui-flex-->
@@ -192,3 +201,8 @@
 
 </view>
 <!--底部弹出 end-->
+
+<!-- 优惠券 -->
+<view hidden="{{coupon}}">
+<include src="/dist/commons/get-coupon/get-coupon.wxml"/> 
+</view>

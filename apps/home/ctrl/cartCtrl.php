@@ -3,10 +3,12 @@ namespace apps\home\ctrl;
 use apps\home\model\cart;
 use apps\home\model\goods;
 use apps\home\model\goodsCover;
+use apps\home\model\discountsAdd;
 class cartCtrl extends baseCtrl{
   public $db;
   public $gdb;
   public $gcodb;
+  public $dadb;
   public $openid;
   public $id;
   // 构造方法
@@ -14,6 +16,7 @@ class cartCtrl extends baseCtrl{
     $this->db = new cart();
     $this->gdb = new goods();
     $this->gcodb = new goodsCover();
+    $this->dadb = new discountsAdd();
     $this->openid = isset($_GET['openid']) ? $_GET['openid'] : '';
     $this->id = isset($_GET['id']) ? intval($_GET['id']) : 0;
   }
@@ -58,17 +61,19 @@ class cartCtrl extends baseCtrl{
     // Get
     if (IS_GET === true) {
       // 读取购物车数据
-      $data = $this->db->getAll($this->openid);
+      $data['cData'] = $this->db->getAll($this->openid);
       if (!$data) {
         echo J(R(400,'',false));
         die;
       }
       // 读取商品数据
-      foreach ($data AS $k => $v) {
-        $data[$k]['gData'] = $this->gdb->getInfo($v['gid']);
-        $data[$k]['gData']['img_path'] = $this->gcodb->getCover($v['gid']);
-        $data[$k]['selected'] = true;
+      foreach ($data['cData'] AS $k => $v) {
+        $data['cData'][$k]['gData'] = $this->gdb->getInfo($v['gid']);
+        $data['cData'][$k]['gData']['img_path'] = $this->gcodb->getCover($v['gid']);
+        $data['cData'][$k]['selected'] = true;
       }
+      // 读取用户优惠额度
+      $data['coupon'] = $this->dadb->getCoupon($this->openid);
 
       echo J(R(200,'',$data));
       die;

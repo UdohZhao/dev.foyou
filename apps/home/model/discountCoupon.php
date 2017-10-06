@@ -19,6 +19,13 @@ class discountCoupon extends model{
     return $this->query($sql)->fetchAll();
   }
 
+  /**
+   * 读取单条记录
+   */
+  public function getRow(){
+    return $this->get($this->table,'*');
+  }
+
 
 }
 

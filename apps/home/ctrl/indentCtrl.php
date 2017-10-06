@@ -8,6 +8,7 @@ use apps\home\model\cart;
 use apps\home\model\goodsCover;
 use apps\home\model\groupGoods;
 use apps\home\model\groupJoin;
+use apps\home\model\discountsAdd;
 class indentCtrl extends baseCtrl{
   public $openid;
   public $itype;
@@ -18,6 +19,7 @@ class indentCtrl extends baseCtrl{
   public $gcodb;
   public $ggdb;
   public $gjdb;
+  public $dadb;
   public $id;
   // 构造方法
   public function _auto(){
@@ -30,6 +32,7 @@ class indentCtrl extends baseCtrl{
     $this->gcodb = new goodsCover();
     $this->ggdb = new groupGoods();
     $this->gjdb = new groupJoin();
+    $this->dadb = new discountsAdd();
     $this->id = isset($_GET['id']) ? intval($_GET['id']) : 0;
   }
 
@@ -65,6 +68,14 @@ class indentCtrl extends baseCtrl{
           // 删除购物车相关数据
           foreach ($_POST['cid'] AS $k => $v) {
             $this->cdb->del($this->openid,$v);
+          }
+          // 扣除当前用户优惠额度
+          $totalPercentagePrice = isset($_POST['totalPercentagePrice']) ? $_POST['totalPercentagePrice'] : 0;
+          $coupon = isset($_POST['coupon']) ? $_POST['coupon'] : 0;
+          $checkCoupon = isset($_POST['checkCoupon']) ? $_POST['checkCoupon'] : false;
+          if ($checkCoupon == 'true') {
+            $coupon = bcsub($coupon, $totalPercentagePrice, 2);
+            $this->dadb->save($this->openid,array('money_coupon'=>$coupon));
           }
           echo J(R(200,'受影响的操作 :)',array('iid'=>$iid)));
           die;

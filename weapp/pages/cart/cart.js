@@ -6,6 +6,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    checkCoupon: true,
+    onSubmit: false,
     domain: App.data.domain,
     technicalSupport: App.data.technicalSupport,
     carts: [],               // 购物车列表
@@ -13,6 +15,13 @@ Page({
     totalPrice: 0,           // 总价，初始为0
     selectAllStatus: true    // 全选状态，默认全选
   
+  },
+
+  /**
+ * 判断数组是否为空
+ */
+  isEmpty: function (value) {
+    return (Array.isArray(value) && value.length === 0) || (Object.prototype.isPrototypeOf(value) && Object.keys(value).length === 0);
   },
 
   /**
@@ -57,11 +66,12 @@ Page({
           console.log(res.data);
 
           // if
-          if (res.data.data) {
+          if (!that.isEmpty(res.data.data.cData)) {
 
             that.setData({
               hasList: true,
-              carts: res.data.data
+              carts: res.data.data.cData,
+              coupon: res.data.data.coupon
             });
 
             that.getTotalPrice();
@@ -305,29 +315,28 @@ Page({
   getTotalPrice() {
     let carts = this.data.carts;                  // 获取购物车列表
     let total = 0;
+    let totalSs = 0;
+    let totalPercentagePrice = 0;
     for (let i = 0; i < carts.length; i++) {         // 循环列表得到每个数据
       if (carts[i].selected) {                     // 判断选中才会计算价格
-        total += carts[i].quantity * carts[i].gData.promotion_price;   // 所有价格加起来
+        total += carts[i].quantity * carts[i].gData.promotion_price - carts[i].gData.percentage_price;   // 所有价格加起来
+        totalSs += carts[i].quantity * carts[i].gData.promotion_price;
+        totalPercentagePrice += carts[i].quantity * carts[i].gData.percentage_price;
       }
     }
-    this.setData({                                // 最后赋值到data中渲染到页面
+    this.setData({       // 最后赋值到data中渲染到页面
       carts: carts,
-      totalPrice: total.toFixed(2)
+      totalPrice: total.toFixed(2),
+      totalSsPrice: totalSs.toFixed(2),
+      totalPercentagePrice: totalPercentagePrice.toFixed(2)
     });
-  },
-
-  /**
-   * 判断数组是否为空
-   */
-  isEmpty: function (value) {
-    return (Array.isArray(value) && value.length === 0) || (Object.prototype.isPrototypeOf(value) && Object.keys(value).length === 0);
   },
 
   /**
    * 结算
    */
   closeAnAccount(e) {
-    
+
     var that = this
 
     let carts = that.data.carts;
@@ -358,7 +367,37 @@ Page({
         showCancel: false
       })
 
+    } else if (parseFloat(that.data.totalPercentagePrice) > parseFloat(that.data.coupon) && that.data.onSubmit == false) {
+
+      // 全额赋值
+      that.setData({
+        totalPrice: that.data.totalSsPrice
+      });
+
+      // 商品优惠额度大于自身优惠额度
+      wx.showModal({
+        title: '优惠提示',
+        content: '由于您当前优惠额度不足以兑换，请全额支付 :(',
+        showCancel: false,
+        success: function (res) {
+          if (res.confirm) {
+            // 开启提交
+            that.setData({
+              onSubmit: true,
+              checkCoupon: false
+            });
+          }
+        }
+      })
+
     } else {
+      // 开启提交
+      that.setData({
+        onSubmit: true
+      });
+    }
+
+    if (that.data.onSubmit == true) {
 
       // 订单数据
       console.log(cid);
@@ -368,6 +407,8 @@ Page({
       console.log(promotion_price);
       console.log(quantity);
       console.log(totalPrice);
+      console.log(that.data.totalPercentagePrice);
+      console.log(that.data.checkCoupon);
 
       // 结算数据同步缓存
       // wx.setStorageSync('iData', iData['cid']);
@@ -387,13 +428,18 @@ Page({
           specification: specification,
           promotion_price: promotion_price,
           quantity: quantity,
-          totalPrice: totalPrice
+          totalPrice: totalPrice,
+          totalPercentagePrice: that.data.totalPercentagePrice,
+          coupon: that.data.coupon,
+          checkCoupon: that.data.checkCoupon
         },
         header: {
           'content-type': 'application/x-www-form-urlencoded'
         },
         method: 'POST',
         success: function (res) {
+
+          console.log(res.data);
 
           // if 
           if (res.data.code == 400) {

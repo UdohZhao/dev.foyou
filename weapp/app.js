@@ -2,7 +2,7 @@
 App({
   data: {
     // 域名
-    //domain: "https://hwtyijia.com",
+    //domain: "https://weapp.icunji.com",
     domain: "http://dev.foyou.local",
     phone: "18423031898",
     technicalSupport: ""
@@ -89,7 +89,6 @@ App({
       })
     }
   },
-
   globalData: {
     userInfo: null
   }

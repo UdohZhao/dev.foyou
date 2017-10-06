@@ -70,6 +70,8 @@ CREATE TABLE `goods`(
     `promotion_price` decimal(14,2) UNSIGNED NOT NULL COMMENT '促销价',
     `inventory` int(10) UNSIGNED NOT NULL COMMENT '库存',
     `content` varchar(50000) NOT NULL COMMENT '详情',
+    `percentage` tinyint(2) UNSIGNED NOT NULL COMMENT '兑换百分比',
+    `percentage_price` decimal(14,2) UNSIGNED NOT NULL COMMENT '兑换百分比价格',
     `ctime` int(10) UNSIGNED NOT NULL COMMENT '时间',
     `type` tinyint(1) UNSIGNED NOT NULL COMMENT '类型？0>普通商品，1>拼团商品',
     `status` tinyint(1) UNSIGNED NOT NULL COMMENT '状态？0>上架，1>下架',
@@ -155,6 +157,17 @@ CREATE TABLE `publicity`(
     `img_path` varchar(255) NOT NULL COMMENT '图片路径',
     PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
+# 优惠额度累计表
+CREATE TABLE `discounts_add`(
+    `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '优惠额度累计表主键id',
+    `openid` varchar(64) NOT NULL COMMENT '唯一标识，openid',
+    `money_coupon` decimal(14,2) UNSIGNED NOT NULL COMMENT '优惠额度',
+    PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+# 微信用户表
+CREATE TABLE `wechat_user`(
+    `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '微信用户表',
+    `openid` varchar(64) NOT NULL COMMENT '唯一标识，openid',
+    PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

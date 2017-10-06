@@ -9,6 +9,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    coupon: true,
     imgUrls: '',
     indicatorDots: true,
     autoplay: true,
@@ -53,6 +54,10 @@ Page({
 
     // 获取商品id
     var gid = options.gid;
+
+    that.setData({
+      gid: options.gid
+    });
 
     // 友好体验开始
     wx.showLoading({
@@ -166,8 +171,28 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
-  
+  onShareAppMessage: function (e) {
+    var that = this;
+    return {
+      title: '分享给朋友获得等价优惠额',
+      path: '/pages/goodsDetail/goodsDetail?gid=' + that.data.gid,
+      success: function (res) {
+        // 转发成功
+        console.log(res);
+        that.setData({
+          coupon: false
+        });
+      },
+      fail: function (e) {
+        // 转发失败
+        console.log(e);
+        wx.showModal({
+          title: '提示',
+          content: '取消了分享 ～',
+          showCancel: false
+        })
+      }
+    }
   },
 
   /**
@@ -526,6 +551,65 @@ Page({
         }
       }
     })
+
+  },
+
+  /**
+   * 立即领取优惠券
+   */
+  hideGetCoupon: function (e) {
+
+    var that = this;
+
+    console.log(e.currentTarget.dataset.price);
+    console.log(wx.getStorageSync('openid'));
+
+    // 请求累加优惠额度
+    wx.request({
+      url: App.data.domain + '/discountsAdd/add',
+      data: {
+        openid: wx.getStorageSync('openid'),
+        price: e.currentTarget.dataset.price
+      },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      method: 'POST',
+      success: function (res) {
+
+        console.log(res);
+
+        // if 
+        if (res.data.code == 1) {
+          wx.showModal({
+            title: '提示',
+            content: res.msg,
+            showCancel: false
+          })
+        }
+
+        that.setData({
+          coupon: true
+        });
+
+      },
+      fail: function (e) {
+        console.log(e)
+        wx.showModal({
+          title: '网络错误',
+          content: '请点击确定刷新页面!',
+          showCancel: false,
+          success: function (res) {
+            if (res.confirm) {
+              wx.reLaunch({
+                url: '/pages/main/main'
+              })
+            }
+          }
+        })
+      }
+    })
+
 
   }
 

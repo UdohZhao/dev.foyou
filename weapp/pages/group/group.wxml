@@ -24,7 +24,7 @@
                   <view class="weui-flex__item">
                   <view class="placeholder">
                     <image class="img-thumb" src="{{domain}}{{vv.img_path}}"></image>
-                    <view class="commodity-title">猫饲料</view>
+                    <view class="commodity-title">{{vv.cname}}</view>
                     <view class="commodity-price">
                     <text class="team-price">¥{{vv.promotion_price}}</text>  
                     <text class="alone-price">¥{{vv.original_price}}</text>  

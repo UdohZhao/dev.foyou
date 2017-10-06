@@ -67,7 +67,7 @@ class goodsCtrl extends baseCtrl{
           $data['gjData']['count'] = $this->gjdb->getCcount($data['ggData']['id']);
         } else {
           // 优惠券
-          $data['dcData'] = $this->dcdb->getAll();
+          $data['dcData'] = $this->dcdb->getRow();
           // 销量
           $data['igData']['count'] = $this->igdb->getgCorrelation($this->id);
         }

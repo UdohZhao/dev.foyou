@@ -14,13 +14,33 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+
     var that = this;
+
     //调用应用实例的方法获取全局数据
     App.getUserInfo(function (userInfo) {
       //更新数据
       that.setData({
         userInfo: userInfo
       })
+    })
+
+    // 请求当前用户优惠累计额度
+    wx.request({
+      url: App.data.domain +'/discountsAdd/getCoupon', //仅为示例，并非真实的接口地址
+      data: {
+        openid: wx.getStorageSync('openid')
+      },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      method: 'POST',
+      success: function (res) {
+        console.log(res.data)
+        that.setData({
+          coupon: res.data.data
+        });
+      }
     })
   
   },
@@ -36,7 +56,26 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+
+    var that = this;
+
+    // 请求当前用户优惠累计额度
+    wx.request({
+      url: App.data.domain + '/discountsAdd/getCoupon', //仅为示例，并非真实的接口地址
+      data: {
+        openid: wx.getStorageSync('openid')
+      },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      method: 'POST',
+      success: function (res) {
+        console.log(res.data)
+        that.setData({
+          coupon: res.data.data
+        });
+      }
+    })
   },
 
   /**

@@ -14,10 +14,6 @@ $(function(){
         price: {
           required: true,
           number: true
-        },
-        sort: {
-          required: true,
-          digits: true
         }
       },
       messages: {
@@ -31,10 +27,6 @@ $(function(){
         price: {
           required: "<span style='color:red;'>优惠价格不能为空 :(</span>",
           number: "<span style='color:red;'>必须输入合法的数字（整数，小数） :(</span>"
-        },
-        sort: {
-          required: "<span style='color:red;'>排序不能为空 :(</span>",
-          digits: "<span style='color:red;'>必须输入整数 :(</span>"
         }
       },
       submitHandler: function(form){
@@ -46,7 +38,7 @@ $(function(){
                 swal("提交失败", res.msg, "error");
               } else {
                 swal("提交成功", res.msg, "success");
-                window.setTimeout("window.location.href='/admin/discountCoupon/index'",2000);
+                setTimeout("window.location.reload();",2000);
               }
             },
             error:function(e){
