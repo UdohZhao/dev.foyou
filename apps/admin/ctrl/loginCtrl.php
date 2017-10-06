@@ -51,9 +51,10 @@ class loginCtrl extends \core\icunji{
         if ($res['status'] == 1) {
            $result['code'] = 401;
            $result['msg'] = '该用户已被冻结，请联系网站管理员 :(';
+        } else {
+          // 用户信息存入session
+          $_SESSION['userinfo'] = $res;
         }
-        // 用户信息存入session
-        $_SESSION['userinfo'] = $res;
       }
       echo json_encode($result);
       die;

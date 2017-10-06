@@ -5,7 +5,7 @@
     <swiper indicator-dots="{{indicatorDots}}"
       autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" style="height:500rpx;">
       <block wx:for="{{gData}}" wx:key="i" wx:for-index="k" wx:for-item="v">
-        <swiper-item>
+        <swiper-item data-gid="{{v.id}}" bindtap="gotoGoodsDetail">
           <image src="{{domain}}{{v.img_path}}" class="slide-image"/>
         </swiper-item>
       </block>
