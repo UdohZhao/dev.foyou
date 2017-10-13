@@ -13,15 +13,30 @@
     <!-- 首页banner end -->
 
       <view class="weui-tab">
-          <view class="weui-navbar">
+          <!-- <view class="weui-navbar">
               <block wx:for="{{gcData}}" wx:key="i" wx:for-index="k" wx:for-item="v" >
                   <view id="{{k}}" class="weui-navbar__item {{activeIndex == k ? 'weui-bar__item_on' : ''}}" data-gcid="{{v.id}}" bindtap="tabClick">
                       <view class="weui-navbar__title">{{v.cname}}</view>
                   </view>
               </block>
               <view class="weui-navbar__slider" style="left: {{sliderLeft}}px; transform: translateX({{sliderOffset}}px); -webkit-transform: translateX({{sliderOffset}}px);"></view>
-          </view>
-          <view class="weui-tab__panel">
+          </view> -->
+
+        <view class="weui-grids gc-grids">
+            <block wx:for="{{gcData}}" wx:key="i" wx:for-index="k" wx:for-item="v">
+                <view id="{{k}}" data-gcid="{{v.id}}" bindtap="tabClick" class="weui-grid gc-grid" hover-class="weui-grid_active">
+                <view wx:if="{{k == 0}}">
+                    <image class="weui-grid__icon" src="{{v.icon_path}}"/>
+                </view>
+                <view wx:else>
+                    <image class="weui-grid__icon" src="{{domain}}{{v.icon_path}}"/>
+                </view>
+                    <view class="weui-grid__label">{{v.cname}}</view>
+                </view>
+            </block>
+        </view>
+
+          <view class="weui-tab__panel goods-box">
 
           <!-- <view wx:if="{{gData}}">
             <view class="weui-flex">
@@ -37,6 +52,7 @@
 
               <!-- if start -->
               <view wx:if="{{gData}}">
+              <view class="hot-recommend">——— 热门推荐 ———</view>
                 <!--weui-flex-->
                 <block wx:for="{{gData}}" wx:key="ii" wx:for-index="kk" wx:for-item="vv">
                 <view class="weui-flex commodity-flex" data-gid="{{vv.id}}" bindtap="gotoGoodsDetail">
@@ -44,8 +60,10 @@
                     <view class="placeholder">
                       <view class="commodity-box">  
                         <image class="img-thumb" src="{{domain}}{{vv.img_path}}"></image>
-                        <view class="commodity-price">¥{{vv.promotion_price}}</view>
+                        <!-- <view class="commodity-price">¥{{vv.promotion_price}}</view> -->
                         <view class="commodity-title">{{vv.cname}}</view>
+                        <view class="goods-price">¥{{vv.promotion_price}}</view>
+                        <text class="goods-sales-volume">销量：{{vv.igData.count}}</text>
                       </view>
                     </view>
                   </view>

@@ -35,8 +35,19 @@ class goodsCategoryCtrl extends baseCtrl{
     }
     // Ajax
     if (IS_AJAX === true) {
+      // file
+      if (isset($_FILES['icon_path'])) {
+        $res = upFiles('icon_path');
+        if ($res['code'] == 400) {
+          echo J(R(402,$res['msg'],false));
+          die;
+        }
+        $icon_path = $res['data'];
+      } else {
+        $icon_path = isset($_POST['icon_path']) ? $_POST['icon_path'] : '';
+      }
       // data
-      $data = $this->getData();
+      $data = $this->getData($icon_path);
       // 防止重复添加
       $id = $this->db->getId($data['cname'],$data['type']);
       if ($id) {
@@ -70,8 +81,8 @@ class goodsCategoryCtrl extends baseCtrl{
   }
 
   // 初始化数据
-  private function getData(){
-    $data = array();
+  private function getData($icon_path){
+    $data['icon_path'] = $icon_path;
     $data['cname'] = htmlspecialchars($_POST['cname']);
     $data['sort'] = intval($_POST['sort']);
     $data['type'] = $_POST['type'];
@@ -111,6 +122,25 @@ class goodsCategoryCtrl extends baseCtrl{
         die;
       } else {
         echo J(R(400,'请尝试刷新页面后重试 :('));
+        die;
+      }
+    }
+  }
+
+  /**
+   * 删除icon图标
+   */
+  public function delIcon(){
+    // Ajax
+    if (IS_AJAX === true) {
+      $icon_path = isset($_POST['icon_path']) ? $_POST['icon_path'] : '';
+      @unlink(ICUNJI.$icon_path);
+      $res = $this->db->save($this->id,array('icon_path'=>''));
+      if ($res) {
+        echo J(R(0,'受影响的操作 :)',true));
+        die;
+      } else {
+        echo J(R(1,'请尝试刷新页面后重试 :(',false));
         die;
       }
     }

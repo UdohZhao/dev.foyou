@@ -12,7 +12,24 @@
         <h3 class="panel-title">@ 添加商品分类</h3>
       </div>
       <div class="panel-body">
-        <form class="form-horizontal" id="goodsCategoryForm" action="/admin/goodsCategory/add/id/{{ data.id }}" method="post"> <div class="form-group">
+        <form class="form-horizontal" id="goodsCategoryForm" action="/admin/goodsCategory/add/id/{{ data.id }}" method="post" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">图标</label>
+            <div class="col-sm-10">
+              {% if data.icon_path %}
+              <div id="preview0">
+                <img id="imghead0" border="0" src="{{data.icon_path}}" width="28" height="28" onclick="delIcon({{data.id}},'{{data.icon_path}}');">
+              </div>
+              <input type="hidden" id="previewImg0" name="icon_path" value="{{data.icon_path}}">
+              {% else %}
+              <div id="preview0">
+                <img id="imghead0" border="0" src="/apps/admin/views/goodsCategory/img/photo.png" width="50" height="50" onclick="$('#previewImg0').click();">
+              </div>
+              <input type="file" onchange="previewImage(this,'preview0','imghead0','previewImg0')" style="display: none;" id="previewImg0" name="icon_path" accept="image/*">
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group">
             <label for="inputEmail3" class="col-sm-2 control-label">名称</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" name="cname" value="{{ data.cname }}" placeholder="请输入商品类别名称">

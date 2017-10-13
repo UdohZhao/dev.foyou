@@ -4,6 +4,7 @@ use apps\home\model\goodsCategory;
 use apps\home\model\goods;
 use apps\home\model\goodsCover;
 use apps\home\model\publicity;
+use apps\home\model\indentGoods;
 class mainCtrl extends baseCtrl{
   public $type;
   public $gcdb;
@@ -11,6 +12,7 @@ class mainCtrl extends baseCtrl{
   public $gcodb;
   public $gcid;
   public $pdb;
+  public $igdb;
   // 构造方法
   public function _auto(){
     $this->type = isset($_GET['type']) ? intval($_GET['type']) : 0;
@@ -19,6 +21,7 @@ class mainCtrl extends baseCtrl{
     $this->gdb = new goods();
     $this->gcodb = new goodsCover();
     $this->pdb = new publicity();
+    $this->igdb = new indentGoods();
   }
 
   // 请求数据
@@ -30,6 +33,7 @@ class mainCtrl extends baseCtrl{
       $data['gcData'] = $this->gcdb->getAll($this->type);
       $gcAll = array();
       $gcAll['id'] = 0;
+      $gcAll['icon_path'] = '/dist/images/icon/gc-all.png';
       $gcAll['cname'] = '全部';
       $gcAll['sort'] = 0;
       $gcAll['type'] = 0;
@@ -37,9 +41,11 @@ class mainCtrl extends baseCtrl{
       // 请求全部商品数据
       $data['gData'] = $this->gdb->getAll($this->type);
       if ($data['gData']) {
-        // 请求相关商品封面图片
         foreach ($data['gData'] AS $k => $v) {
+          // 请求相关商品封面图片
           $data['gData'][$k]['img_path'] = $this->gcodb->getCover($v['id']);
+          // 请求相关商品销量
+          $data['gData'][$k]['igData']['count'] = $this->igdb->getgCorrelation($v['id']);
         }
         // 请求banner
         $data['banner'] = $this->pdb->getBanner();
@@ -68,6 +74,8 @@ class mainCtrl extends baseCtrl{
         // 请求相关商品封面图片
         foreach ($data['gData'] AS $k => $v) {
           $data['gData'][$k]['img_path'] = $this->gcodb->getCover($v['id']);
+          // 请求相关商品销量
+          $data['gData'][$k]['igData']['count'] = $this->igdb->getgCorrelation($v['id']);
         }
       } else {
         $data['gData'] = false;

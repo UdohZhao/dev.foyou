@@ -55,6 +55,7 @@ CREATE TABLE `indent_take_delivery`(
 # 商品类别表
 CREATE TABLE `goods_category`(
     `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '商品类别表主键id',
+    `icon_path` varchar(255) UNSIGNED NOTt NULL COMMENT '图标路径',
     `cname` varchar(25) NOT NULL COMMENT '类别名称',
     `sort` tinyint(3) UNSIGNED NOT NULL COMMENT '排序',
     `type` tinyint(1) UNSIGNED NOT NULL COMMENT '类型？0>普通，1>拼团',

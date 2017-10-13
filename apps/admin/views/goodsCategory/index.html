@@ -28,6 +28,9 @@
           <thead>
             <tr>
               <th>#</th>
+              {% if type == 0 %}
+              <th>icon图标</th>
+              {% endif %}
               <th>类别名称</th>
               <th>排序</th>
               <th>操作</th>
@@ -44,6 +47,9 @@
                   <span class="label label-danger">拼团</span>
                 {% endif %}
               </td>
+              {% if type == 0 %}
+              <td><img src="{{v.icon_path}}" class="img-responsive" style="width: 28px;height: 28px;"></td>
+              {% endif %}
               <td>{{ v.cname }}</td>
               <td>{{ v.sort }}</td>
               <td>
